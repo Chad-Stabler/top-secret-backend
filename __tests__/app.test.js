@@ -34,6 +34,13 @@ describe('backend-express-template routes', () => {
       email
     });
   });
+  it('sign in user should sign a user in', async () => {
+    await request(app).post('/api/v1/users').send(mockUser);
+    const res = await request(app)
+      .post('/api/v1/users/sessions')
+      .send({ email: mockUser.email, password: mockUser.password });
+    expect(res.status).toEqual(200);
+  });
   it('delete /sessions should delete cookie', async () => {
     const [agent] = await regAndSignIn();
     const resp = await agent.delete('/api/v1/users/sessions');
